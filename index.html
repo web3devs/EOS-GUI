@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>EOS Gui</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script>
+        window.jQuery = window.$ = require('jquery');
+    </script>
+      <script src="window.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    </head>
+    <!DOCTYPE html>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">EOS GUI</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container"><br /><br /><br />
+      <div class="col-md-9">
+        <div class="alert alert-danger" id="dockerWarning" style="display:none;">The EOS docker isn't running! Click here to start it: <button onclick="startDocker()">Start Docker</button></div>
+        <div class="alert alert-success" id="dockerRunning" style="display:none;">The EOS docker is running! Click here to stop it: <button onclick="stopDocker()">Stop Docker</button></div>
+
+        <h2>Wallets</h2>
+        <ul class="list-group" id="wallet-list">
+        </ul>
+        <hr />
+        <input type="text" placeholder="walletName" id="walletName" /><button onclick="createWallet()">Create wallet</button>
+        <div class="alert alert-danger" id="walletInfo" style="display:none;">Your wallet was created. Please store this password! At this time, this app doesn't have any persistent storage and DOES NOT manage passwords for you.<div class="well"></div></div>
+        
+        <h2>Keys</h2>
+        <ul class="list-group" id="key-list">
+        </ul>
+        <hr />
+      
+      </div>
+
+    </div><!-- /.container -->
+
+  </body>
+  </html>
