@@ -101,7 +101,7 @@ function listWallets() {
             if (walletArray[i].indexOf('*') > -1) {
                 content = '<li class="list-group-item">'+cleanString(walletArray[i])+' <span class="label label-success">unlocked</span>';
             } else {
-                content = '<li class="list-group-item">'+cleanString(walletArray[i])+' <span class="label label-danger">locked</span>';
+                content = '<li class="list-group-item">'+cleanString(walletArray[i])+' <span class="label label-danger">locked</span><input type="text" id="privateKey" placeholder="privateKey" /><button onclick="unlockWallet();">Unlock</button>';
             }
 
             content = content + '</li>';
@@ -124,7 +124,7 @@ function cleanString(walletName) {
 function createAccount(walletName) {
     alert(walletName);
 }
-
+var activeKey;
 function listKeys() {
     exec('docker exec eosio /opt/eosio/bin/cleos --url http://127.0.0.1:7777 --wallet-url http://127.0.0.1:5555 wallet open', (error, stdout, stderr) => {
     if (error) {
@@ -148,9 +148,9 @@ function listKeys() {
         console.log(walletArray);
         $("#key-list").html("");
         for ( i = 0; i < walletArray.length; i++) {
-            
+            activeKey = cleanString(walletArray[i]);
             content = '<li class="list-group-item">'+cleanString(walletArray[i]);
-            content = content + "<br /><strong>Accounts</strong><ul>";
+            content = content + "<br /><strong>Accounts</strong><ul id="+activeKey+">";
             exec('docker exec eosio /opt/eosio/bin/cleos --url http://127.0.0.1:7777 --wallet-url http://127.0.0.1:5555 get accounts '+cleanString(walletArray[i]), (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);
@@ -178,7 +178,27 @@ function listKeys() {
     });
   });
 }
-
+function unlockWallet() {
+    cmd = 'docker exec eosio /opt/eosio/bin/cleos --url http://127.0.0.1:7777 --wallet-url http://127.0.0.1:5555 wallet open';
+    console.log(cmd);
+    exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    
+    cmd = 'docker exec eosio /opt/eosio/bin/cleos --url http://127.0.0.1:7777 --wallet-url http://127.0.0.1:5555 wallet unlock -n default --password '+$("#privateKey").val();
+    console.log(cmd);
+    exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    listWallets();
+    listKeys();
+});
+    });
+}
 function createAccount(publicKey) {
     exec('docker exec eosio /opt/eosio/bin/cleos --url http://127.0.0.1:7777 --wallet-url http://127.0.0.1:5555 wallet unlock -n default --password '+$("#privateKey").val(), (error, stdout, stderr) => {
     if (error) {
